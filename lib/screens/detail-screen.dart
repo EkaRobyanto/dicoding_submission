@@ -1,8 +1,8 @@
 import 'package:dicoding_submission/const/property.dart';
 import 'package:flutter/material.dart';
 
-class detail_screen extends StatelessWidget {
-  const detail_screen({
+class detail_screen extends StatefulWidget {
+  detail_screen({
     Key? key,
     required this.name,
     required this.pic,
@@ -12,6 +12,13 @@ class detail_screen extends StatelessWidget {
   final String pic;
   final String name;
   final String desc;
+  bool isFavorite = false;
+
+  @override
+  State<detail_screen> createState() => _detail_screenState();
+}
+
+class _detail_screenState extends State<detail_screen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: bcolor,
@@ -28,13 +35,31 @@ class detail_screen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          widget.isFavorite = !widget.isFavorite;
+                        });
+                      },
+                      icon: widget.isFavorite
+                          ? Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                            )
+                          : Icon(Icons.star_border),
+                    )
+                  ],
                 ),
                 Container(
                   height: 200,
@@ -43,7 +68,7 @@ class detail_screen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     image: DecorationImage(
-                        image: AssetImage(pic), fit: BoxFit.contain),
+                        image: AssetImage(widget.pic), fit: BoxFit.contain),
                   ),
                 )
               ],
@@ -54,7 +79,7 @@ class detail_screen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15),
           child: Text(
-            desc,
+            widget.desc,
             textAlign: TextAlign.justify,
             style: TextStyle(
               fontSize: 20,
